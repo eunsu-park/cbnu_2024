@@ -19,7 +19,7 @@ batch_n = data[start:end] # batch_n : 배치 데이터
 print(batch_n.shape)
 
 
-epochs = 10 # epochs : 학습 횟수
+epochs = 5 # epochs : 학습 횟수
 batch_size = 128 # batch_size : 배치의 크기
 shuffle = True # shuffle : 데이터를 섞을지 여부
 nb_batch = data.shape[0] // batch_size # nb_batch : 배치의 수, 편의상 나머지는 제외
