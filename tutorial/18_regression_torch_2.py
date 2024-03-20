@@ -63,7 +63,6 @@ for epoch in range(10000):
         loss = loss_function(y_pred, y_target)
         w_pred = model.weight.data
         b_pred = model.bias.data
-        loss = torch.mean(torch.square(y_pred - y_target))
         print(f"Epoch: {epoch}, w: {w_pred.item():5.3f}, b: {b_pred.item():5.3f}, loss: {loss.item():5.3f}")
 
 y_pred = model(x)
