@@ -12,7 +12,6 @@ def get_num_params(model):
     """
     return sum([p.numel() for p in model.parameters()])
 
-
 ## nn.Sequential : 여러 레이어를 순차적으로 쌓아서 모델을 만드는 클래스
 
 model = []

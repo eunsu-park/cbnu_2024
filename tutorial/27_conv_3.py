@@ -1,6 +1,5 @@
 import torch
 import torch.nn as nn
-import matplotlib.pyplot as plt
 
 def get_num_params(model):
     """

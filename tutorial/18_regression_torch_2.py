@@ -25,7 +25,6 @@ plt.plot(x, y_target, 'o')
 plt.plot(x, y_true, 'r-')
 plt.show()
 
-
 ## torch.nn을 이용한 선형 회귀
 ## torch.nn.Linear를 사용하여 모델 정의
 ## torch.nn.MSELoss를 사용하여 손실 함수 정의
