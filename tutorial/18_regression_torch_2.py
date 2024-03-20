@@ -38,7 +38,7 @@ optimizer = torch.optim.SGD(model.parameters(),
                             lr=learning_rate)
 print(model)
 print(optimizer)
-print(optimizer)
+print(loss_function)
 
 x = torch.from_numpy(x)
 y_target = torch.from_numpy(y_target)
