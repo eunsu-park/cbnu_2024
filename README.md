@@ -1,2 +1,7 @@
-# cbnu_2024
-AI for Astronomy, CBNU 2024
+# CBNU / 2024 / 인공지능천문학 I
+
+PyTorch Tutorial
+
+Classification
+
+Generation
