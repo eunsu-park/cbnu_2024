@@ -1,6 +1,6 @@
-## 06_reshape_2.py
-## reshape(view) 사용 시 -1 활용법
-## -1을 사용하면 나머지 차원을 자동으로 계산함을 의미
+# 06_reshape_2.py
+# reshape(view) 사용 시 -1 활용법
+# -1을 사용하면 나머지 차원을 자동으로 계산함을 의미
 
 import numpy as np
 import torch

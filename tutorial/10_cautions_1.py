@@ -1,5 +1,5 @@
-## 10_cautions_1.py
-## 차원 변경 시 주의사항
+# 10_cautions_1.py
+# 차원 변경 시 주의사항
 
 import numpy as np
 import torch

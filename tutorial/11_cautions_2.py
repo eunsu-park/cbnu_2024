@@ -1,5 +1,5 @@
-## 11_cautions_2.py
-## 차원 변경 시 주의사항 - 데이터 복사
+# 11_cautions_2.py
+# 차원 변경 시 주의사항 - 데이터 복사
 
 import numpy as np
 import torch
