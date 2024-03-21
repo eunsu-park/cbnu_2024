@@ -1,56 +1,40 @@
+# 04_numpy_vs_pytorch.py
+# numpy array와 pytorch tensor의 차이점
+
 import numpy as np
 import torch
 
+# int64, rank-1
 array = np.array([1, 2, 3])
-print(array)
-print(array.shape)
-print(array.dtype)
+tensor = torch.tensor([1, 2, 3]) # torch.tensor() : torch tensor 생성 함수
+print(array.shape, array.dtype)
+print(tensor.shape, tensor.dtype)
+print("")
 
-tensor = torch.tensor([1, 2, 3])
-print(tensor)
-print(tensor.shape)
-print(tensor.dtype)
-
-## torch.Tensor() : torch tensor 생성 함수
-
+# float64, rank-1
 array = np.array([1., 2., 3.])
-print(array)
-print(array.shape)
-print(array.dtype)
-
 tensor = torch.tensor([1., 2., 3.])
-print(tensor)
-print(tensor.shape)
-print(tensor.dtype)
+print(array.shape, array.dtype)
+print(tensor.shape, tensor.dtype)
+print("")
 
-array = np.array([[1, 2, 3],
-                  [4, 5, 6]])
-print(array)
-print(array.shape)
-print(array.dtype)
+# int64, rank-2
+array = np.array([[1, 2, 3], [4, 5, 6]])
+tensor = torch.tensor([[1, 2, 3], [4, 5, 6]])
+print(array.shape, array.dtype)
+print(tensor.shape, tensor.dtype)
+print("")
 
-tensor = torch.tensor([[1, 2, 3],
-                       [4, 5, 6]])
-print(tensor)
-print(tensor.shape)
-print(tensor.dtype)
-
+# float64, rank-2
 array = np.array([1, 2, 3], dtype=np.int64)
-print(array)
-print(array.shape)
-print(array.dtype)
+tensor = torch.LongTensor([1, 2, 3]) # torch.LongTensor() : torch long tensor 생성 함수
+print(array.shape, array.dtype)
+print(tensor.shape, tensor.dtype)
+print("")
 
-tensor = torch.LongTensor([1, 2, 3])
-print(tensor)
-print(tensor.shape)
-print(tensor.dtype)
-
+# float32, rank-1
 array = np.array([1, 2, 3], dtype=np.float32)
-print(array)
-print(array.shape)
-print(array.dtype)
-
-tensor = torch.FloatTensor([1, 2, 3])
-print(tensor)
-print(tensor.shape)
-print(tensor.dtype)
+tensor = torch.FloatTensor([1, 2, 3]) # torch.FloatTensor() : torch float tensor 생성 함수
+print(array.shape, array.dtype)
+print(tensor.shape, tensor.dtype)
+print("")
