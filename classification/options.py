@@ -1,6 +1,6 @@
 import argparse
 
-class BaseOption():
+class BaseOptions():
     def __init__(self):
         self.parser = argparse.ArgumentParser()
         self.parser.add_argument('--name', type=str, default='default')
@@ -15,9 +15,9 @@ class BaseOption():
         return self.parser.parse_args(args=[])
 
 
-class TrainOption(BaseOption):
+class TrainOptions(BaseOptions):
     def __init__(self):
-        super(TrainOption, self).__init__()
+        super(TrainOptions, self).__init__()
         self.parser.add_argument('--is_train', type=bool, default=True)
         self.parser.add_argument('--gpu_id', type=int, default=0)
         self.parser.add_argument('--batch_size', type=int, default=4)
@@ -26,9 +26,9 @@ class TrainOption(BaseOption):
         self.parser.add_argument('--lr', type=float, default=0.0002)
 
 
-class TestOption(BaseOption):
+class TestOptions(BaseOptions):
     def __init__(self):
-        super(TestOption, self).__init__()
+        super(TestOptions, self).__init__()
         self.parser.add_argument('--is_train', type=bool, default=False)
         self.parser.add_argument('--gpu_id', type=int, default=0)
         self.parser.add_argument('--batch_size', type=int, default=4)
