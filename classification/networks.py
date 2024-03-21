@@ -81,7 +81,8 @@ class CustomModel(nn.Module):
 
 def define_network(opt):
     model = CustomModel(opt.in_channels, opt.num_classes)
-    model.apply(weight_init)
+    if opt.is_train:
+        model.apply(weight_init)
     return model
 
 
