@@ -1,3 +1,6 @@
+# 20_linear_2.py
+# Linear Layer
+
 import torch
 import torch.nn as nn
 
@@ -12,12 +15,10 @@ def get_num_params(model):
     """
     return sum([p.numel() for p in model.parameters()])
 
-## nn.Sequential : 여러 레이어를 순차적으로 쌓아서 모델을 만드는 클래스
-
 model = []
 model += [nn.Linear(2, 4)]
 model += [nn.Linear(4, 3)]
-model = nn.Sequential(*model)
+model = nn.Sequential(*model) # nn.Sequential() : 여러 레이어를 순차적으로 쌓아서 모델을 만드는 클래스, *model : model 리스트의 원소를 unpacking하여 인자로 전달
 print(model)
 print(f"Number of parameters in model: {get_num_params(model)}")
 

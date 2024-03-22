@@ -65,8 +65,8 @@ optimizer = torch.optim.SGD([w_pred, b_pred], lr=learning_rate) # torch.optim.SG
 print(optimizer)
 
 for epoch in range(10000):
-    y_pred = w_pred * x + b_pred # 예측값
-    loss = mse(y_pred, y_target) # 손실값
+    y_pred = w_pred * x + b_pred # 예측값 계산
+    loss = mse(y_pred, y_target) # 손실값 계산
     optimizer.zero_grad() # optimizer의 gradient 초기화
     loss.backward() # 손실값을 사용하여 기울기 계산
     optimizer.step() # optimizer를 사용하여 기울기를 이용하여 파라미터 업데이트

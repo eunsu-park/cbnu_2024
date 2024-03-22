@@ -1,3 +1,6 @@
+# 21_activation_1.py
+# Activation functions
+
 import torch
 import torch.nn as nn
 import matplotlib.pyplot as plt
@@ -13,24 +16,18 @@ def get_num_params(model):
     """
     return sum([p.numel() for p in model.parameters()])
 
-
-## ReLU : y = max(0, x)
-relu = nn.ReLU()
+relu = nn.ReLU() # ReLU : y = max(0, x)
 print(relu)
-print(f"Number of parameters in relu: {get_num_params(relu)}")
+print(f"Number of parameters in relu: {get_num_params(relu)}") # ReLU 레이어는 학습 가능한 파라미터가 없음
 
-## Sigmoid : y = 1 / (1 + exp(-x))
-## 0과 1 사이의 값을 출력하는 함수로, 이진 분류 문제에서 출력층에 주로 사용됨
-sigmoid = nn.Sigmoid()
+sigmoid = nn.Sigmoid() # Sigmoid : y = 1 / (1 + exp(-x)), 0 <= y <= 1, 이진 분류 문제에서 출력층에 주로 사용됨
 print(sigmoid)
-print(f"Number of parameters in sigmoid: {get_num_params(sigmoid)}")
+print(f"Number of parameters in sigmoid: {get_num_params(sigmoid)}") # Sigmoid 레이어는 학습 가능한 파라미터가 없음
 
-## Tanh : y = (exp(x) - exp(-x)) / (exp(x) + exp(-x))
 ## -1 <= y <= 1
-tanh = nn.Tanh()
+tanh = nn.Tanh() # Tanh : y = (exp(x) - exp(-x)) / (exp(x) + exp(-x)), -1 <= y <= 1
 print(tanh)
-print(f"Number of parameters in tanh: {get_num_params(tanh)}")
-
+print(f"Number of parameters in tanh: {get_num_params(tanh)}") # Tanh 레이어는 학습 가능한 파라미터가 없음
 
 inp = torch.randn(128, 2)
 out_relu = relu(inp)
@@ -43,6 +40,8 @@ print(out_tanh.size())
 plt.plot(inp.numpy(), out_relu.numpy(), 'o', label='ReLU', color='r')
 plt.plot(inp.numpy(), out_sigmoid.numpy(), 'x', label='Sigmoid', color='g')
 plt.plot(inp.numpy(), out_tanh.numpy(), '*', label='Tanh', color='b')
+plt.xlim(-2, 2)
+plt.ylim(-1, 1)
 plt.legend()
 plt.grid(True)
 plt.show()

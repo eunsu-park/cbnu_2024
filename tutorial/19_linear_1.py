@@ -1,3 +1,6 @@
+# 19_linear_1.py
+# Linear Layer
+
 import torch
 import torch.nn as nn
 
@@ -12,11 +15,11 @@ def get_num_params(model):
     """
     return sum([p.numel() for p in model.parameters()])
 
-linear1 = nn.Linear(2, 4)
-print(linear1)
+linear1 = nn.Linear(2, 4) # input feature의 개수가 2, output feature의 개수가 4
+print(linear1) 
 print(f"Number of parameters in linear1: {get_num_params(linear1)}")
 
-linear2 = nn.Linear(4, 3)
+linear2 = nn.Linear(4, 3) # input feature의 개수가 4, output feature의 개수가 3
 print(linear2)
 print(f"Number of parameters in linear2: {get_num_params(linear2)}")
 
