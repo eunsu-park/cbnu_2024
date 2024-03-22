@@ -14,7 +14,7 @@ print(tensor)
 print(tensor.dtype)
 print("")
 
-tensor = torch.Tensor(array) # torch.Tensor(), 위와 다르게 float tensor로 변환
+tensor = torch.Tensor(array) # torch.Tensor(), 위와 다르게 float tensor로 변환 -> 추천하지 않음
 print(tensor)
 print(tensor.dtype)
 print("")
