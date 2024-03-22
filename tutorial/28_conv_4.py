@@ -1,3 +1,6 @@
+# 28_conv_4.py
+# Convolution Layer - padding
+
 import torch
 import torch.nn as nn
 
@@ -11,9 +14,6 @@ def get_num_params(model):
         num_params : int
     """
     return sum([p.numel() for p in model.parameters()])
-
-## Conv2d : 2D Convolutional Layer
-## padding : 입력 이미지 주변에 0으로 둘러싸는 효과
 
 inp = torch.randn(128, 1, 16, 16)
 conv1 = nn.Conv2d(1, 3, kernel_size=3)

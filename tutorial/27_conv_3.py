@@ -1,3 +1,6 @@
+# 27_conv_3.py
+# Convolution Layer - in_channels, out_channels
+
 import torch
 import torch.nn as nn
 
@@ -11,9 +14,6 @@ def get_num_params(model):
         num_params : int
     """
     return sum([p.numel() for p in model.parameters()])
-
-## Conv2d : 2D Convolutional Layer
-## in_channels, out_channels : 입력 이미지의 채널 수, 출력 이미지의 채널 수
 
 inp = torch.randn(128, 1, 16, 16)
 conv1 = nn.Conv2d(1, 3, kernel_size=3)

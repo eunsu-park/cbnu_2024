@@ -1,3 +1,6 @@
+# 25_conv_1.py
+# Convolution Layer - kernel_size
+
 import torch
 import torch.nn as nn
 
@@ -12,9 +15,6 @@ def get_num_params(model):
     """
     return sum([p.numel() for p in model.parameters()])
 
-## Conv2d : 2D Convolutional Layer
-## kernel_size : 커널의 크기
-
 inp = torch.randn(128, 1, 16, 16)
 
 conv1 = nn.Conv2d(1, 1, kernel_size=3)
@@ -22,21 +22,25 @@ print(conv1)
 print(f"Number of parameters in conv1: {get_num_params(conv1)}")
 out = conv1(inp)
 print(out.size())
+print("")
 
 conv2 = nn.Conv2d(1, 1, kernel_size=2)
 print(conv2)
 print(f"Number of parameters in conv2: {get_num_params(conv2)}")
 out = conv2(inp)
 print(out.size())
+print("")
 
 conv3 = nn.Conv2d(1, 1, kernel_size=(4, 2))
 print(conv3)
 print(f"Number of parameters in conv3: {get_num_params(conv3)}")
 out = conv3(inp)
 print(out.size())
+print("")
 
 conv4 = nn.Conv2d(1, 1, kernel_size=1)
 print(conv4)
 print(f"Number of parameters in conv4: {get_num_params(conv4)}")
 out = conv4(inp)
 print(out.size())
+print("")

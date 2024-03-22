@@ -1,3 +1,6 @@
+# 29_conv_5.py
+# Convolution Layer - stride
+
 import torch
 import torch.nn as nn
 
@@ -11,9 +14,6 @@ def get_num_params(model):
         num_params : int
     """
     return sum([p.numel() for p in model.parameters()])
-
-## Conv2d : 2D Convolutional Layer
-## stride : 커널을 이동시키는 간격
 
 inp = torch.randn(128, 1, 16, 16)
 conv1 = nn.Conv2d(1, 3, kernel_size=3)

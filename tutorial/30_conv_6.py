@@ -1,3 +1,6 @@
+# 30_conv_6.py
+# Convolution Layer - kernel_size, stride, padding 조합을 통한 출력 이미지 크기 조절
+
 import torch
 import torch.nn as nn
 
