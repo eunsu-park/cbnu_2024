@@ -1,6 +1,6 @@
 # 13_device.py
 # CPU와 GPU 사용하기
-# NVidia GPU가 없는 경우 이 코드는 실행되지 않습니다.
+# NVidia GPU가 없는 경우 중간에서 에러가 발생
 
 import torch
 

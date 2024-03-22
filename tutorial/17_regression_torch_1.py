@@ -1,68 +1,81 @@
+# 17_regression_torch_1.py
+# PyTorch를 이용한 선형 회귀
+
 import numpy as np
 import torch
 import torch.nn as nn
 import matplotlib.pyplot as plt
 
-## 랜덤 데이터셋 생성
-## y_true = w_true * x + b_true 이며 w_true=0.9, b_true=0.3라고 가정
-## x는 0부터 100까지 200개의 데이터 포인트로 구성
-## y_target는 w_true * x + b_true에 노이즈를 추가한 값
-## 모델 훈련에는 x, y_target의 페어를 사용
+def generate_dataset(w_true, b_true, num=200):
+    """
+    y_true = w_true * x + b_true
+    x : 0부터 100까지 200개의 데이터 포인트
+    y_target : w_true * x + b_true에 노이즈를 추가한 값
+
+    Args:
+        w_true : float, 
+        b_true : float
+        num : int, 데이터 포인트의 개수
+
+    Returns:
+    - x : np.ndarray, shape=(num, 1)
+    - y_target : np.ndarray, shape=(num, 1)    
+    """
+    x = np.linspace(0, 100, num) # shape=(num,)
+    x = np.expand_dims(x, axis=1) # shape=(num, 1)
+    y_true = w_true * x + b_true
+    noise = np.random.normal(0, 5, size=y_true.shape) # np.random.normal() : 정규 분포로부터 랜덤한 수를 추출하는 함수
+    y_target = y_true + noise
+    x = x.astype(np.float32)
+    y_target = y_target.astype(np.float32)
+    return x, y_target
 
 w_true, b_true = 0.9, 0.3
-
-x = np.linspace(0, 100, 200)
-x = np.expand_dims(x, axis=1)
+x, y_target = generate_dataset(w_true, b_true)
+x = torch.from_numpy(x) # numpy array to torch tensor
+y_target = torch.from_numpy(y_target) # numpy array to torch tensor
 y_true = w_true * x + b_true
-noise = np.random.normal(0, 5, size=y_true.shape)
-y_target = y_true + noise
-x = x.astype(np.float32)
-y_target = y_target.astype(np.float32)
 print(x.shape, y_target.shape)
 print(x.dtype, y_target.dtype)
-
-plt.plot(x, y_target, 'o')
-plt.plot(x, y_true, 'r-')
+plt.plot(x, y_target, 'o') # 'o' : 원형 마커
+plt.plot(x, y_true, 'r-') # 'r-' : 빨간색 실선
 plt.show()
 
-## mse : 평균 제곱 오차(Mean Squared Error, MSE)
-
 def mse(y_pred, y_target):
+    """
+    평균 제곱 오차(Mean Squared Error, MSE) 계산
+
+    Args:
+        y_pred : torch.Tensor, 예측 값
+        y_target : torch.Tensor, 타겟 값
+
+    Returns:
+        mse : torch.Tensor, 평균 제곱 오차
+    """
     return torch.mean(torch.square(y_pred - y_target))
 
-## PyTorch를 이용한 선형 회귀
-## w_pred, b_pred는 0.0으로 초기화
-## learning_rate = 0.0002로 설정
-## w_pred, b_pred는 requires_grad=True로 설정
-## optimizer는 torch.optim.SGD를 사용
-
-w_pred = torch.zeros(1, requires_grad=True)
-b_pred = torch.zeros(1, requires_grad=True)
-learning_rate = 0.0002
-optimizer = torch.optim.SGD([w_pred, b_pred],
-                            lr=learning_rate)
-print(optimizer)
-
-x = torch.from_numpy(x)
-y_target = torch.from_numpy(y_target)
-print(x.shape, y_target.shape)
-print(x.dtype, y_target.dtype)
+w_pred = torch.zeros(1, requires_grad=True) # torch.zeros() : 0으로 초기화된 tensor 생성
+b_pred = torch.zeros(1, requires_grad=True) # requires_grad=True : tensor에 대한 기울기를 계산하도록 설정
 y_pred = w_pred * x + b_pred
 loss = mse(y_pred, y_target)
 print(f"Initial w: {w_pred.item():5.3f}, b: {b_pred.item():5.3f}, loss: {loss.item():5.3f}")
 
-for epoch in range(10000):
-    y_pred = w_pred * x + b_pred
-    loss = mse(y_pred, y_target)
-    optimizer.zero_grad()
-    loss.backward()
-    optimizer.step()
+learning_rate = 0.0002 # 학습률 설정
+optimizer = torch.optim.SGD([w_pred, b_pred], lr=learning_rate) # torch.optim.SGD() : SGD optimizer 생성, lr : 학습률, w_pred, b_pred를 optimizer에 등록
+print(optimizer)
 
-    if epoch % 1000 == 0 :
+for epoch in range(10000):
+    y_pred = w_pred * x + b_pred # 예측값
+    loss = mse(y_pred, y_target) # 손실값
+    optimizer.zero_grad() # optimizer의 gradient 초기화
+    loss.backward() # 손실값을 사용하여 기울기 계산
+    optimizer.step() # optimizer를 사용하여 기울기를 이용하여 파라미터 업데이트
+
+    if epoch % 1000 == 0 : # 1000번째 epoch마다 중간 결과를 출력
         y_pred = w_pred * x + b_pred
-        loss = torch.mean(torch.square(y_pred - y_target))
+        loss = mse(y_pred, y_target)
         print(f"Epoch: {epoch}, w: {w_pred.item():5.3f}, b: {b_pred.item():5.3f}, loss: {loss.item():5.3f}")
 
 y_pred = w_pred * x + b_pred
-loss = torch.mean(torch.square(y_pred - y_target))
+loss = mse(y_pred, y_target)
 print(f"Final w: {w_pred.item():5.3f}, b: {b_pred.item():5.3f}, loss: {loss.item():5.3f}")

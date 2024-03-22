@@ -1,61 +1,66 @@
+# 18_regression_torch_2.py
+# PyTorch NN을 이용한 선형 회귀
+
 import numpy as np
 import torch
 import torch.nn as nn
 import matplotlib.pyplot as plt
 
-## 랜덤 데이터셋 생성
-## y_true = w_true * x + b_true 이며 w_true=0.9, b_true=0.3라고 가정
-## x는 0부터 100까지 200개의 데이터 포인트로 구성
-## y_target는 w_true * x + b_true에 노이즈를 추가한 값
-## 모델 훈련에는 x, y_target의 페어를 사용
+def generate_dataset(w_true, b_true, num=200):
+    """
+    y_true = w_true * x + b_true
+    x : 0부터 100까지 200개의 데이터 포인트
+    y_target : w_true * x + b_true에 노이즈를 추가한 값
+
+    Args:
+        w_true : float, 
+        b_true : float
+        num : int, 데이터 포인트의 개수
+
+    Returns:
+    - x : np.ndarray, shape=(num, 1)
+    - y_target : np.ndarray, shape=(num, 1)    
+    """
+    x = np.linspace(0, 100, num) # shape=(num,)
+    x = np.expand_dims(x, axis=1) # shape=(num, 1)
+    y_true = w_true * x + b_true
+    noise = np.random.normal(0, 5, size=y_true.shape) # np.random.normal() : 정규 분포로부터 랜덤한 수를 추출하는 함수
+    y_target = y_true + noise
+    x = x.astype(np.float32)
+    y_target = y_target.astype(np.float32)
+    return x, y_target
 
 w_true, b_true = 0.9, 0.3
-
-x = np.linspace(0, 100, 200)
-x = np.expand_dims(x, axis=1)
+x, y_target = generate_dataset(w_true, b_true)
+x = torch.from_numpy(x) # numpy array to torch tensor
+y_target = torch.from_numpy(y_target) # numpy array to torch tensor
 y_true = w_true * x + b_true
-noise = np.random.normal(0, 5, size=y_true.shape)
-y_target = y_true + noise
-x = x.astype(np.float32)
-y_target = y_target.astype(np.float32)
 print(x.shape, y_target.shape)
 print(x.dtype, y_target.dtype)
-
-plt.plot(x, y_target, 'o')
-plt.plot(x, y_true, 'r-')
+plt.plot(x, y_target, 'o') # 'o' : 원형 마커
+plt.plot(x, y_true, 'r-') # 'r-' : 빨간색 실선
 plt.show()
 
-## torch.nn을 이용한 선형 회귀
-## torch.nn.Linear를 사용하여 모델 정의
-## torch.nn.MSELoss를 사용하여 손실 함수 정의
-## torch.optim.SGD를 사용하여 optimizer 정의
-
-model = torch.nn.Linear(1, 1, bias=True)
-loss_function = torch.nn.MSELoss()
-learning_rate = 0.0002
-optimizer = torch.optim.SGD(model.parameters(),
-                            lr=learning_rate)
+model = torch.nn.Linear(1, 1, bias=True) # 피팅할 함수, y = wx + b
+loss_function = torch.nn.MSELoss() # 손실함수
+learning_rate = 0.0002 # 학습률 설정
+optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate) # torch.optim.SGD() : SGD optimizer 생성, lr : 학습률, model의 파라미터를 optimizer에 등록
 print(model)
 print(optimizer)
 print(loss_function)
 
-x = torch.from_numpy(x)
-y_target = torch.from_numpy(y_target)
-print(x.shape, y_target.shape)
-print(x.dtype, y_target.dtype)
-
 y_pred = model(x)
 loss = loss_function(y_pred, y_target)
-w_pred = model.weight.data
+w_pred = model.weight.data 
 b_pred = model.bias.data
 print(f"Initial w: {w_pred.item():5.3f}, b: {b_pred.item():5.3f}, loss: {loss.item():5.3f}")
 
-for epoch in range(10000):
-    y_pred = model(x)
-    loss = loss_function(y_pred, y_target)
-    optimizer.zero_grad()
-    loss.backward()
-    optimizer.step()
+for epoch in range(10000): 
+    y_pred = model(x) # 예측값 계산
+    loss = loss_function(y_pred, y_target) # 손실값 계산
+    optimizer.zero_grad() # optimizer의 gradient 초기화
+    loss.backward() # 손실값을 사용하여 기울기 계산
+    optimizer.step() # optimizer를 사용하여 파라미터 업데이트
 
     if epoch % 1000 == 0 :
         y_pred = model(x)
