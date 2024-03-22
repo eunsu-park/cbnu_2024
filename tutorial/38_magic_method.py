@@ -1,4 +1,5 @@
-
+# 38_magic_method.py
+# Magic Method
 
 class CustomL2UString:
 
@@ -18,15 +19,10 @@ class CustomL2UString:
     
     def __call__(self):
         return self.original.upper()
-    
 
-
-if __name__ == "__main__" :
-
-    string = "Hello World"
-
-    custom_string = CustomL2UString(string) ## __init__ 호출
-    print(custom_string) ## __repr__ 호출
-    print(len(custom_string)) ## __len__ 호출
-    print(custom_string[0]) ## __getitem__ 호출
-    print(custom_string()) ## __call__ 호출
+string = "Hello World"
+custom_string = CustomL2UString(string) ## __init__ 호출
+print(custom_string) ## __repr__ 호출
+print(len(custom_string)) ## __len__ 호출
+print(custom_string[0]) ## __getitem__ 호출
+print(custom_string()) ## __call__ 호출

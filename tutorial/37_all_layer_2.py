@@ -15,7 +15,6 @@ def get_num_params(model):
     """
     return sum([p.numel() for p in model.parameters()])
 
-
 class MyModel(nn.Module): # nn.Module을 상속받아 모델을 정의
     def __init__(self, in_channels, num_classes):
         super(MyModel, self).__init__() # nn.Module의 __init__() 메소드 호출
@@ -51,7 +50,6 @@ class MyModel(nn.Module): # nn.Module을 상속받아 모델을 정의
         x = x.view(x.size(0), -1)
         x = self.classifier(x)
         return x
-
 
 model1 = MyModel(in_channels=3, num_classes=10)
 print(model1)
