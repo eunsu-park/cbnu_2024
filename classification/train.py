@@ -8,7 +8,7 @@ import numpy as np
 
 ## 제작한 모듈 import
 from options import TrainOptions
-from networks import define_network, define_criterion, define_optimizer
+from networks import define_network, define_criterion, define_optimizer, init_network
 from pipeline import define_dataset
 from utils import fix_seed, get_num_params
 
@@ -19,15 +19,14 @@ opt = TrainOptions().parse()
 fix_seed(opt.seed)
 
 ## device 설정
-if torch.cuda.is_available() :
-    if opt.gpu_id != -1 :
-        device = torch.device(f"cuda:{opt.gpu_id}")
-    else :
-        device = torch.device("cpu")
-elif torch.backends.mps.is_available():
-    device = torch.device("mps")
-else :
-    device = torch.device("cpu")
+
+device = (
+    "cuda"
+    if torch.cuda.is_available()
+    else "mps"
+    if torch.backends.mps.is_available()
+    else "cpu"
+)
 print(device)
 
 ## network, criterion, optimizer 정의
@@ -45,7 +44,7 @@ print(len(dataset), len(dataloader))
 
 ## 학습 결과 저장 디렉토리 생성
 save_dir = os.path.join(opt.save_root, opt.name)
-os.makedirs(opt.save_dir, exist_ok=True)
+os.makedirs(save_dir, exist_ok=True)
 
 
 

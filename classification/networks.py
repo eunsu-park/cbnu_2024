@@ -1,9 +1,11 @@
 import torch
 import torch.nn as nn
+import torch.nn.init as init
 
-class CustomModel(nn.Module):
+
+class CustomNetwork(nn.Module):
     """
-    CustomModel 클래스
+    CustomNetwork 클래스
     """
     def __init__(self, in_channels, num_classes):
         """
@@ -14,7 +16,7 @@ class CustomModel(nn.Module):
             num_classes : int
                 클래스 수
         """
-        super(CustomModel, self).__init__()
+        super(CustomNetwork, self).__init__()
         self.in_channels = in_channels
         self.num_classes = num_classes
         self.define_classifier()
@@ -113,25 +115,54 @@ def define_network(opt):
         network : nn.Module
             네트워크
     """
-    network = CustomModel(opt.in_channels, opt.num_classes)
-    if opt.is_train:
-        network.apply(weight_init)
+    network = CustomNetwork(opt.in_channels, opt.num_classes)
     return network
 
 
-def weight_init(m):
+# def weight_init(m):
+#     """
+#     네트워크의 가중치를 초기화하는 함수
+#     Args:
+#         m : nn.Module
+#             네트워크의 각 층
+#     """
+#     if isinstance(m, nn.Conv2d):
+#         nn.init.kaiming_normal_(m.weight)
+#         nn.init.constant_(m.bias, 0)
+#     elif isinstance(m, nn.Linear):
+#         nn.init.kaiming_normal_(m.weight)
+#         nn.init.constant_(m.bias, 0)
+
+def init_network(network, init_type='normal', init_gain=0.02):
     """
     네트워크의 가중치를 초기화하는 함수
     Args:
-        m : nn.Module
-            네트워크의 각 층
+        net : nn.Module
+            네트워크
+        init_type : str, default='normal'
+            초기화 방법
+        init_gain : float, default=0.02
+            초기화 gain
     """
-    if isinstance(m, nn.Conv2d):
-        nn.init.kaiming_normal_(m.weight)
-        nn.init.constant_(m.bias, 0)
-    elif isinstance(m, nn.Linear):
-        nn.init.kaiming_normal_(m.weight)
-        nn.init.constant_(m.bias, 0)
+    def init_func(m):
+        classname = m.__class__.__name__
+        if hasattr(m, 'weight') and (classname.find('Conv') != -1 or classname.find('Linear') != -1):
+            if init_type == 'normal':
+                init.normal_(m.weight.data, 0.0, init_gain)
+            elif init_type == 'xavier':
+                init.xavier_normal_(m.weight.data, gain=init_gain)
+            elif init_type == 'kaiming':
+                init.kaiming_normal_(m.weight.data, a=0, mode='fan_in')
+            elif init_type == 'orthogonal':
+                init.orthogonal_(m.weight.data, gain=init_gain)
+            else:
+                raise NotImplementedError('initialization method [%s] is not implemented' % init_type)
+            if hasattr(m, 'bias') and m.bias is not None:
+                init.constant_(m.bias.data, 0.0)
+        elif classname.find('BatchNorm2d') != -1: 
+            init.normal_(m.weight.data, 1.0, init_gain)
+            init.constant_(m.bias.data, 0.0)
+    network.apply(init_func)
 
 
 def define_criterion(opt):

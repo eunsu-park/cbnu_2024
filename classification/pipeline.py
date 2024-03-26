@@ -73,8 +73,7 @@ class NormalizeData:
             image : numpy.ndarray
                 정규화된 이미지 데이터
         """
-        image /= 255.
-        return image
+        return image/255.
 
 
 class MakeLabel:
@@ -157,7 +156,7 @@ class CustomDataset(Dataset):
             pattern = f"{data_root}/train/*/*/*.png"
         else :
             pattern = f"{data_root}/test/*/*/*.png"
-        self.list_data = glob(pattern)
+        self.list_data = glob.glob(pattern)
         self.nb_data = len(self.list_data)
         self.transform_image = Compose([NormalizeData(),
                                         ResizeData(image_size),
