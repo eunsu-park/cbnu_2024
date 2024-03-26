@@ -80,4 +80,7 @@ while epochs < opt.num_epochs:
         state = {"network": state_network, "optimizer": state_optimizer, "epoch": epochs}
         torch.save(state, f"{save_dir}/model_{epochs:04d}.pt")
 
-
+state_network = network.state_dict()
+state_optimizer = optimizer.state_dict()
+state = {"network": state_network, "optimizer": state_optimizer, "epoch": epochs}
+torch.save(state, f"{save_dir}/model_final.pt")
