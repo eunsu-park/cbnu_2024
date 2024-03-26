@@ -119,20 +119,6 @@ def define_network(opt):
     return network
 
 
-# def weight_init(m):
-#     """
-#     네트워크의 가중치를 초기화하는 함수
-#     Args:
-#         m : nn.Module
-#             네트워크의 각 층
-#     """
-#     if isinstance(m, nn.Conv2d):
-#         nn.init.kaiming_normal_(m.weight)
-#         nn.init.constant_(m.bias, 0)
-#     elif isinstance(m, nn.Linear):
-#         nn.init.kaiming_normal_(m.weight)
-#         nn.init.constant_(m.bias, 0)
-
 def init_network(network, init_type='normal', init_gain=0.02):
     """
     네트워크의 가중치를 초기화하는 함수
@@ -163,6 +149,7 @@ def init_network(network, init_type='normal', init_gain=0.02):
             init.normal_(m.weight.data, 1.0, init_gain)
             init.constant_(m.bias.data, 0.0)
     network.apply(init_func)
+    return network
 
 
 def define_criterion(opt):
