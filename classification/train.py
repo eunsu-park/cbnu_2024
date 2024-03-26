@@ -19,7 +19,6 @@ opt = TrainOptions().parse()
 fix_seed(opt.seed)
 
 ## device 설정
-
 device = (
     "cuda"
     if torch.cuda.is_available()
@@ -47,6 +46,38 @@ print(len(dataset), len(dataloader))
 save_dir = os.path.join(opt.save_root, opt.name)
 os.makedirs(save_dir, exist_ok=True)
 
+## 학습 시작
+network.train()
+iters = 0
+epochs = 0
+losses = []
+t0 = time.time()
 
+while epochs < opt.num_epochs:
+
+    for idx, (image, label) in enumerate(dataloader):
+        image = image.to(device)
+        label = label.to(device)
+
+        optimizer.zero_grad()
+        output = network(image)
+        loss = criterion(output, label)
+        loss.backward()
+        optimizer.step()
+        losses.append(loss.item())            
+        iters += 1
+
+        if iters % 100 == 0:
+            print(f"Epoch [{epochs}/{opt.num_epochs}], Step [{iters}], Loss: {np.mean(losses):.4f}, Time: {time.time()-t0:.4f}")
+            losses = []
+            t0 = time.time()
+
+    epochs += 1
+
+    if epochs % 5 == 0 :
+        state_network = network.state_dict()
+        state_optimizer = optimizer.state_dict()
+        state = {"network": state_network, "optimizer": state_optimizer, "epoch": epochs}
+        torch.save(state, f"{save_dir}/model_{epochs:04d}.pt")
 
 
