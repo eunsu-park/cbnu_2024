@@ -153,9 +153,9 @@ class CustomDataset(Dataset):
                 학습 데이터셋인지 테스트 데이터셋인지 여부
         """
         if is_train is True :
-            pattern = f"{data_root}/train/*/*/*.png"
+            pattern = f"{data_root}/Train/*/*/*.png"
         else :
-            pattern = f"{data_root}/test/*/*/*.png"
+            pattern = f"{data_root}/Test/*/*/*.png"
         self.list_data = glob.glob(pattern)
         self.nb_data = len(self.list_data)
         self.transform_image = Compose([NormalizeData(),
