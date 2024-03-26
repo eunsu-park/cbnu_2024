@@ -143,6 +143,16 @@ class CustomDataset(Dataset):
     flare 데이터셋을 불러오는 클래스
     """
     def __init__(self, data_root, image_size, is_train=True):
+        """
+        CustomDataset 클래스의 생성자
+        Args:
+            data_root : str
+                flare 데이터셋의 경로
+            image_size : int or tuple
+                이미지 크기
+            is_train : bool
+                학습 데이터셋인지 테스트 데이터셋인지 여부
+        """
         if is_train is True :
             pattern = f"{data_root}/train/*/*/*.png"
         else :
@@ -155,9 +165,25 @@ class CustomDataset(Dataset):
         self.transform_label = Compose([ToTensor()])
         
     def __len__(self):
+        """
+        데이터셋의 크기를 반환하는 함수
+        Returns:
+            int: 데이터셋의 크기
+        """
         return self.nb_data
     
     def __getitem__(self, idx):
+        """
+        데이터셋의 idx번째 데이터를 반환하는 함수
+        Args:
+            idx : int
+                데이터 인덱스
+        Returns:
+            image : torch.Tensor
+                이미지 데이터
+            label : torch.Tensor
+                레이블 데이터
+        """
         image, flare_class = LoadData()(self.list_data[idx])
         label = MakeLabel()(flare_class)
 
