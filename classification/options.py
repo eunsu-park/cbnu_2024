@@ -65,4 +65,4 @@ class TestOptions(BaseOptions):
         self.parser.add_argument('--gpu_id', type=int, default=0)
         self.parser.add_argument('--batch_size', type=int, default=4)
         self.parser.add_argument('--num_workers', type=int, default=2)
-        self.parser.add_argument('--epoch_test', type=int, default=1)
+        self.parser.add_argument('--epoch_test', type=int, default=5)
