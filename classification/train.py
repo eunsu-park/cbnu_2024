@@ -8,7 +8,7 @@ import numpy as np
 
 ## 제작한 모듈 import
 from options import TrainOptions
-from networks import define_network, define_criterion, define_optimizer, init_network
+from networks import define_network, define_criterion, define_optimizer
 from pipeline import define_dataset
 from utils import fix_seed, get_num_params
 
@@ -29,8 +29,7 @@ device = (
 print(device)
 
 ## network, criterion, optimizer 정의
-network = define_network(opt).to(device)
-network = init_network(network)
+network = define_network(opt, state_dict=None).to(device)
 criterion = define_criterion(opt).to(device)
 optimizer = define_optimizer(network, opt)
 print(network)
