@@ -29,7 +29,7 @@ device = (
 print(device)
 
 ## network, criterion, optimizer 정의
-network = define_network(opt, state_dict=None).to(device)
+network = define_network(opt).to(device)
 criterion = define_criterion(opt).to(device)
 optimizer = define_optimizer(network, opt)
 print(network)
