@@ -105,7 +105,7 @@ class CustomNetwork(nn.Module):
         return x
 
 
-def define_network(opt, state_dict=None):
+def define_network(opt, state_dict=None, device=None):
     """
     네트워크를 정의하는 함수
     Args:
