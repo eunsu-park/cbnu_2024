@@ -28,9 +28,8 @@ class BaseOptions():
         self.parser.add_argument('--use_dropout_G', type=bool, default=True)
         self.parser.add_argument('--use_tanh_G', type=bool, default=False)
 
-
-        self.parser.add_argument("--data_root", type=str, default="path/to/data")
-        self.parser.add_argument("--save_root", type=str, default="path/to/save")
+        self.parser.add_argument("--data_root", type=str, default="/Users/eunsu/CBNU/Generation/Dataset")
+        self.parser.add_argument("--save_root", type=str, default="/Users/eunsu/CBNU/Generation/Result")
 
     def parse(self):
         """

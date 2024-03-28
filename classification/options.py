@@ -16,8 +16,9 @@ class BaseOptions():
         self.parser.add_argument('--in_channels', type=int, default=1)
         self.parser.add_argument('--num_classes', type=int, default=2)
         self.parser.add_argument('--image_size', type=int, default=224)
-        self.parser.add_argument("--data_root", type=str, default="path/to/data")
-        self.parser.add_argument("--save_root", type=str, default="path/to/save")
+
+        self.parser.add_argument("--data_root", type=str, default="/Users/eunsu/CBNU/Classification/Dataset")
+        self.parser.add_argument("--save_root", type=str, default="/Users/eunsu/CBNU/Classification/Result")
 
 
     def parse(self):
