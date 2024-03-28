@@ -1,9 +1,8 @@
-import os, glob
+import glob
 import torch
 from torch.utils.data import Dataset, DataLoader
 from torchvision.transforms import Compose
 from imageio import imread
-from skimage.transform import resize
 import numpy as np
 
 

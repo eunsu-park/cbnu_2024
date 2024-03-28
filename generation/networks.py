@@ -211,22 +211,3 @@ def define_generator(opt):
     generator = UnetGenerator(in_channels, out_channels, nb_down_G, nb_feat_init_G, use_dropout, use_tanh)
 
     return generator
-
-
-if __name__ == "__main__" :
-
-    from options import TrainOptions
-    opt = TrainOptions().parse()
-
-    inp = torch.randn(1, 1, 256, 256)
-    tar = torch.randn(1, 1, 256, 256)
-    discriminator = define_discriminator(opt)
-    print(discriminator)
-    out = discriminator(torch.cat([inp, tar], 1))
-    print(out.size())
-
-
-    generator = define_generator(opt)
-    print(generator)
-    gen = generator(inp)
-    print(gen.size())
