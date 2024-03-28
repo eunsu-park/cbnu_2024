@@ -182,7 +182,7 @@ class UnetGenerator(nn.Module):
         return last
 
 
-def define_discriminator(opt):
+def define_discriminator(opt, state_dict=None, device=None):
     in_channels = opt.in_channels
     out_channels = opt.out_channels
     nb_layers = opt.nb_layers_D
@@ -197,10 +197,18 @@ def define_discriminator(opt):
     else :
         discriminator = PatchDiscriminator(in_channels, out_channels, nb_layers, nb_feat_init, nb_feat_max, use_sigmoid)
 
+    if state_dict is not None :
+        discriminator.load_state_dict(state_dict)
+    else :
+        discriminator = init_network(discriminator, init_type='normal', init_gain=0.02)
+
+    if device is not None :
+        discriminator.to(device)
+
     return discriminator
 
 
-def define_generator(opt):
+def define_generator(opt, state_dict=None, device=None):
     in_channels = opt.in_channels
     out_channels = opt.out_channels
     nb_down_G = opt.nb_down_G
@@ -210,4 +218,45 @@ def define_generator(opt):
 
     generator = UnetGenerator(in_channels, out_channels, nb_down_G, nb_feat_init_G, use_dropout, use_tanh)
 
+    if state_dict is not None :
+        generator.load_state_dict(state_dict)
+    else :
+        generator = init_network(generator, init_type='normal', init_gain=0.02)
+
+    if device is not None :
+        generator.to(device)
+
     return generator
+
+
+def init_network(network, init_type='normal', init_gain=0.02):
+    """
+    네트워크의 가중치를 초기화하는 함수
+    Args:
+        net : nn.Module
+            네트워크
+        init_type : str, default='normal'
+            초기화 방법
+        init_gain : float, default=0.02
+            초기화 gain
+    """
+    def init_func(m):
+        classname = m.__class__.__name__
+        if hasattr(m, 'weight') and (classname.find('Conv') != -1 or classname.find('Linear') != -1):
+            if init_type == 'normal':
+                init.normal_(m.weight.data, 0.0, init_gain)
+            elif init_type == 'xavier':
+                init.xavier_normal_(m.weight.data, gain=init_gain)
+            elif init_type == 'kaiming':
+                init.kaiming_normal_(m.weight.data, a=0, mode='fan_in')
+            elif init_type == 'orthogonal':
+                init.orthogonal_(m.weight.data, gain=init_gain)
+            else:
+                raise NotImplementedError('initialization method [%s] is not implemented' % init_type)
+            if hasattr(m, 'bias') and m.bias is not None:
+                init.constant_(m.bias.data, 0.0)
+        elif classname.find('BatchNorm2d') != -1: 
+            init.normal_(m.weight.data, 1.0, init_gain)
+            init.constant_(m.bias.data, 0.0)
+    network.apply(init_func)
+    return network

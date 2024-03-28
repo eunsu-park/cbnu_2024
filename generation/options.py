@@ -16,6 +16,7 @@ class BaseOptions():
 
         self.parser.add_argument('--in_channels', type=int, default=1)
         self.parser.add_argument('--out_channels', type=int, default=1)
+        self.parser.add_argument('--image_size', type=int, default=256)
 
         self.parser.add_argument('--nb_layers_D', type=int, default=3)
         self.parser.add_argument('--nb_feat_init_D', type=int, default=64)
@@ -27,6 +28,15 @@ class BaseOptions():
         self.parser.add_argument('--nb_feat_max_G', type=int, default=512)
         self.parser.add_argument('--use_dropout_G', type=bool, default=True)
         self.parser.add_argument('--use_tanh_G', type=bool, default=False)
+
+        self.parser.add_argument('--init_type', type=str, default='normal')
+        self.parser.add_argument('--init_gain', type=float, default=0.02)
+
+        self.parser.add_argument('--lr', type=float, default=0.0002)
+        self.parser.add_argument('--beta1', type=float, default=0.5)
+        self.parser.add_argument('--beta2', type=float, default=0.999)
+
+        self.parser.add_argument('--lamb', type=float, default=10.0)
 
         self.parser.add_argument("--data_root", type=str, default="/Users/eunsu/CBNU/Generation/Dataset")
         self.parser.add_argument("--save_root", type=str, default="/Users/eunsu/CBNU/Generation/Result")
@@ -57,7 +67,7 @@ class TrainOptions(BaseOptions):
         self.parser.add_argument('--batch_size', type=int, default=1)
         self.parser.add_argument('--num_workers', type=int, default=2)
         self.parser.add_argument('--num_epochs', type=int, default=10)
-        self.parser.add_argument('--lr', type=float, default=0.0002)
+
 
 
 class TestOptions(BaseOptions):

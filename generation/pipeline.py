@@ -3,6 +3,7 @@ import torch
 from torch.utils.data import Dataset, DataLoader
 from torchvision.transforms import Compose
 from imageio import imread
+from skimage.transform import resize
 import numpy as np
 
 
@@ -23,8 +24,8 @@ class LoadData:
                 출력 데이터
         """
         image = imread(filepath).astype(np.float32)
-        inp = image[None, :, :1024]
-        tar = image[None, :, 1024:]
+        inp = image[:, :1024]
+        tar = image[:, 1024:]
         return inp, tar
 
 
@@ -43,6 +44,37 @@ class NormalizeData:
                 정규화된 이미지 데이터
         """
         return image / 127.5 - 1
+
+
+class ResizeData:
+    """
+    이미지 크기를 조절하는 클래스
+    """
+    def __init__(self, image_size=256):
+        """
+        ResizeData 클래스의 생성자
+        Args:
+            image_size : int or tuple
+                이미지 크기
+        """
+        if isinstance(image_size, int) :
+            image_size = (image_size, image_size)
+        self.image_size = image_size
+
+    def __call__(self, image):
+        """
+        이미지 크기를 조절하는 함수
+        Args:
+            image : numpy.ndarray
+                이미지 데이터
+        Returns:
+            image : numpy.ndarray
+                크기가 조절된 이미지 데이터
+        """
+        image = resize(image, (self.image_size, self.image_size), order=1, mode="constant", preserve_range=True)
+        if len(image.shape) == 2 :
+            image = np.expand_dims(image, axis=0)
+        return image
 
 
 class ToTensor:
@@ -74,7 +106,7 @@ class CustomDataset(Dataset):
     """
     AIA-HMI Pair 데이터셋을 불러오는 클래스
     """
-    def __init__(self, data_root, is_train=True):
+    def __init__(self, data_root, image_size, is_train=True):
         """
         CustomDataset 클래스의 생성자
         Args:
@@ -90,6 +122,7 @@ class CustomDataset(Dataset):
         self.list_data = glob.glob(pattern)
         self.nb_data = len(self.list_data)
         self.transform = Compose([NormalizeData(),
+                                  ResizeData(image_size),
                                   ToTensor()])
 
     def __len__(self):

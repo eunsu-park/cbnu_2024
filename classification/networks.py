@@ -105,7 +105,7 @@ class CustomNetwork(nn.Module):
         return x
 
 
-def define_network(opt, state_dict=None, device=None):
+def define_network(opt, state_dict=None):
     """
     네트워크를 정의하는 함수
     Args:
@@ -116,12 +116,15 @@ def define_network(opt, state_dict=None, device=None):
             네트워크
     """
     network = CustomNetwork(opt.in_channels, opt.num_classes)
+
     if state_dict is not None:
         network.load_state_dict(state_dict)
     else :
         network = init_network(network, init_type='normal', init_gain=0.02)
+
     if device is not None:
         network = network.to(device)
+
     return network
 
 
