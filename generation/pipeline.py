@@ -71,7 +71,7 @@ class ResizeData:
             image : numpy.ndarray
                 크기가 조절된 이미지 데이터
         """
-        image = resize(image, (self.image_size, self.image_size), order=1, mode="constant", preserve_range=True)
+        image = resize(image, self.image_size, order=1, mode="constant", preserve_range=True)
         if len(image.shape) == 2 :
             image = np.expand_dims(image, axis=0)
         return image
@@ -162,7 +162,19 @@ def define_dataset(opt):
         dataloader : DataLoader
             데이터로더 객체
     """
-    dataset = CustomDataset(opt.data_root, is_train=True)
+    dataset = CustomDataset(opt.data_root, opt.image_size, opt.is_train)
     dataloader = DataLoader(dataset, batch_size=opt.batch_size,
                             shuffle=opt.is_train, num_workers=opt.num_workers)
     return dataset, dataloader
+
+if __name__ == "__main__" :
+
+    from options import TrainOptions
+    opt = TrainOptions().parse()
+
+    dataset, dataloader = define_dataset(opt)
+
+    for idx, (inp, tar) in enumerate(dataloader):
+        print(idx, inp.shape, tar.shape)
+        if idx == 10 :
+            break
