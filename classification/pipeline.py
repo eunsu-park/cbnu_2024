@@ -197,9 +197,12 @@ def define_dataset(opt):
     dataset과 dataloader를 정의하는 함수
     Args:
         opt : argparse.ArgumentParser
+            사용자 입력값
     Returns:
         dataset : CustomDataset
-        dataloader : torch.utils.data.DataLoader    
+            데이터셋 객체
+        dataloader : DataLoader
+            데이터로더 객체
     """
     dataset = CustomDataset(opt.data_root, opt.image_size, opt.is_train)
     dataloader = DataLoader(dataset, batch_size=opt.batch_size,
